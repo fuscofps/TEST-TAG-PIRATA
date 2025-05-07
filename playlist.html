@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le tue playlist - Soundtrack Hunter</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/images/logo.png">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/styles/style.css">
+</head>
+<body>
+    <!-- Header di navigazione -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                Soundtrack Hunter
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="suggeriti.html" class="nav-link">Suggeriti</a></li>
+                    <li><a href="playlist.html" class="nav-link active">Le tue playlist</a></li>
+                    <li><a href="index.html#about" class="nav-link">Chi Siamo</a></li>
+                    <li><a href="index.html#benefits" class="nav-link">Vantaggi</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contattaci</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Quiz Nerd</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#nerdQuizModal">Scopri il tuo tipo di nerd</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <div class="container">
+            <h1 class="section-title mb-5">Le tue playlist</h1>
+
+            <!-- Login Prompt -->
+            <div class="login-prompt text-center mb-5" id="loginPrompt">
+                <div class="card-icon mb-4">
+                    <i class="fas fa-user-lock"></i>
+                </div>
+                <h3>Accedi per salvare le tue playlist</h3>
+                <p class="text-muted mb-4">Crea un account per salvare le tue colonne sonore preferite e accedervi da qualsiasi dispositivo.</p>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-sign-in-alt"></i> Accedi
+                </button>
+            </div>
+
+            <!-- Trending Soundtracks -->
+            <div class="trending-section mb-5">
+                <h2 class="section-subtitle mb-4">Trending Soundtracks</h2>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="playlist-item">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg" alt="Inception" class="playlist-thumbnail">
+                            <div class="playlist-info">
+                                <h5>Inception</h5>
+                                <p>Hans Zimmer</p>
+                                <small class="text-muted">Ricercato 1.2k volte questa settimana</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="playlist-item">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMTM3NTg2NDQzNF5BMl5BanBnXkFtZTcwNjc2NjQ5OQ@@._V1_.jpg" alt="The Dark Knight" class="playlist-thumbnail">
+                            <div class="playlist-info">
+                                <h5>The Dark Knight</h5>
+                                <p>Hans Zimmer & James Newton Howard</p>
+                                <small class="text-muted">Ricercato 980 volte questa settimana</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="playlist-item">
+                            <img src="https://m.media-amazon.com/images/M/MV5BNGYyNmI3M2YtNzYzZS00OTViLTkxYjAtZDIyZmE1Y2U1ZmQ2XkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg" alt="Your Name" class="playlist-thumbnail">
+                            <div class="playlist-info">
+                                <h5>Your Name</h5>
+                                <p>Radwimps</p>
+                                <small class="text-muted">Ricercato 850 volte questa settimana</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Playlists -->
+            <div class="user-playlists" id="userPlaylists" style="display: none;">
+                <h2 class="section-subtitle mb-4">Le tue playlist salvate</h2>
+                <div class="row g-4">
+                    <!-- Playlist items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Accedi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Accedi</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Non hai un account? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Registrati</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <p>&copy; 2024 Soundtrack Hunter. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="./assets/scripts/main.js"></script>
+</body>
+</html> 

@@ -464,3 +464,259 @@ async function searchMovie(query) {
     }
     hideLoading();
 }
+
+// Gestione del quiz
+document.addEventListener('DOMContentLoaded', function() {
+    const quizForm = document.getElementById('nerdQuizForm');
+    
+    quizForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Ottieni le risposte
+        const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+        const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+        const q3 = document.querySelector('input[name="q3"]:checked')?.value;
+        
+        if (!q1 || !q2 || !q3) {
+            alert('Per favore rispondi a tutte le domande!');
+            return;
+        }
+        
+        // Calcola il risultato
+        let result = calculateResult(q1, q2, q3);
+        
+        // Mostra il risultato
+        showResult(result);
+    });
+});
+
+function calculateResult(q1, q2, q3) {
+    // Conta le occorrenze di ogni tipo
+    const types = [q1, q2, q3];
+    const counts = {
+        pirata: types.filter(t => t === 'pirata').length,
+        cacciatore: types.filter(t => t === 'cacciatore').length,
+        paladino: types.filter(t => t === 'paladino').length
+    };
+    
+    // Determina il tipo dominante
+    let maxType = 'pirata';
+    let maxCount = counts.pirata;
+    
+    if (counts.cacciatore > maxCount) {
+        maxType = 'cacciatore';
+        maxCount = counts.cacciatore;
+    }
+    if (counts.paladino > maxCount) {
+        maxType = 'paladino';
+    }
+    
+    return maxType;
+}
+
+function showResult(type) {
+    const results = {
+        pirata: {
+            title: 'Il Pirata delle Soundtrack',
+            description: 'Sei un vero pirata delle soundtrack! Ami esplorare nuovi territori musicali e condividere i tuoi tesori con gli altri. La tua passione per la scoperta ti porta a navigare in acque sconosciute, sempre alla ricerca della prossima colonna sonora epica.',
+            image: 'pirata.png'
+        },
+        cacciatore: {
+            title: 'Il Cacciatore di Melodie',
+            description: 'Sei un cacciatore metodico e preciso. Analizzi ogni dettaglio delle colonne sonore e hai un orecchio eccezionale per i particolari. La tua pazienza e dedizione ti permettono di trovare gemme musicali che altri potrebbero perdere.',
+            image: 'cacciatore.png'
+        },
+        paladino: {
+            title: 'Il Paladino della Musica',
+            description: 'Sei un vero paladino della musica! Difendi e preservi i classici con passione. La tua conoscenza approfondita delle colonne sonore storiche ti rende un punto di riferimento per gli altri appassionati.',
+            image: 'paladino.png'
+        }
+    };
+    
+    const result = results[type];
+    
+    // Crea il contenuto del risultato
+    const resultContent = `
+        <div class="text-center">
+            <h3 class="mb-4">${result.title}</h3>
+            <p class="mb-4">${result.description}</p>
+            <img src="./assets/images/${result.image}" alt="${result.title}" class="img-fluid mb-4" style="max-width: 200px;">
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    `;
+    
+    // Chiudi il modal del quiz
+    const quizModal = bootstrap.Modal.getInstance(document.getElementById('nerdQuizModal'));
+    if (quizModal) {
+        quizModal.hide();
+    }
+    
+    // Crea e mostra il modal dei risultati
+    const resultModal = new bootstrap.Modal(document.createElement('div'));
+    resultModal._element.className = 'modal fade';
+    resultModal._element.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Il Tuo Risultato</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ${resultContent}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(resultModal._element);
+    resultModal.show();
+}
+
+// Playlist Management
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginPrompt = document.getElementById('loginPrompt');
+    const userPlaylists = document.getElementById('userPlaylists');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Simulazione login (in un'applicazione reale, qui ci sarebbe una chiamata API)
+            if (email && password) {
+                // Nascondi il prompt di login e mostra le playlist
+                loginPrompt.style.display = 'none';
+                userPlaylists.style.display = 'block';
+                
+                // Aggiungi alcune playlist di esempio
+                const playlistsContainer = userPlaylists.querySelector('.row');
+                const examplePlaylists = [
+                    {
+                        title: 'Colonne Sonore Preferite',
+                        count: '12 brani',
+                        image: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg'
+                    },
+                    {
+                        title: 'Hans Zimmer Collection',
+                        count: '8 brani',
+                        image: 'https://m.media-amazon.com/images/M/MV5BMTM3NTg2NDQzNF5BMl5BanBnXkFtZTcwNjc2NjQ5OQ@@._V1_.jpg'
+                    },
+                    {
+                        title: 'Anime Soundtracks',
+                        count: '15 brani',
+                        image: 'https://m.media-amazon.com/images/M/MV5BNGYyNmI3M2YtNzYzZS00OTViLTkxYjAtZDIyZmE1Y2U1ZmQ2XkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg'
+                    }
+                ];
+
+                examplePlaylists.forEach(playlist => {
+                    const playlistElement = document.createElement('div');
+                    playlistElement.className = 'col-md-6 col-lg-4';
+                    playlistElement.innerHTML = `
+                        <div class="playlist-item">
+                            <img src="${playlist.image}" alt="${playlist.title}" class="playlist-thumbnail">
+                            <div class="playlist-info">
+                                <h5>${playlist.title}</h5>
+                                <p>${playlist.count}</p>
+                            </div>
+                        </div>
+                    `;
+                    playlistsContainer.appendChild(playlistElement);
+                });
+            }
+        });
+    }
+
+    // Gestione dei pulsanti delle categorie
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Rimuovi la classe active da tutti i pulsanti
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            // Aggiungi la classe active al pulsante cliccato
+            this.classList.add('active');
+            
+            // Qui potresti aggiungere la logica per filtrare le playlist in base alla categoria
+        });
+    });
+});
+
+// Gestione della ricerca
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const randomButton = document.getElementById('randomButton');
+    const searchSuggestions = document.getElementById('searchSuggestions');
+    const navigationButtons = document.querySelector('.navigation-buttons');
+    const header = document.querySelector('.header');
+    const resultContainer = document.getElementById('resultContainer');
+    const playlistContainer = document.getElementById('playlistContainer');
+
+    // Nascondi i risultati all'inizio
+    resultContainer.style.display = 'none';
+    playlistContainer.style.display = 'none';
+
+    // Funzione per mostrare/nascondere elementi durante la ricerca
+    function toggleSearchMode(isSearching) {
+        if (isSearching) {
+            navigationButtons.style.display = 'none';
+            header.style.display = 'none';
+            resultContainer.style.display = 'block';
+            playlistContainer.style.display = 'block';
+        } else {
+            navigationButtons.style.display = 'block';
+            header.style.display = 'block';
+            resultContainer.style.display = 'none';
+            playlistContainer.style.display = 'none';
+        }
+    }
+
+    // Gestione input di ricerca
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        if (query.length > 0) {
+            toggleSearchMode(true);
+            // Mostra suggerimenti
+            searchSuggestions.style.display = 'block';
+            // Qui puoi aggiungere la logica per i suggerimenti
+        } else {
+            toggleSearchMode(false);
+            searchSuggestions.style.display = 'none';
+        }
+    });
+
+    // Gestione click sul pulsante di ricerca
+    searchButton.addEventListener('click', function() {
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+            toggleSearchMode(true);
+            // Qui puoi aggiungere la logica per la ricerca
+        }
+    });
+
+    // Gestione click sul pulsante casuale
+    randomButton.addEventListener('click', function() {
+        toggleSearchMode(true);
+        // Qui puoi aggiungere la logica per il film casuale
+    });
+
+    // Gestione click fuori dalla barra di ricerca
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+            searchSuggestions.style.display = 'none';
+        }
+    });
+
+    // Gestione selezione suggerimento
+    searchSuggestions.addEventListener('click', function(e) {
+        if (e.target.classList.contains('suggestion-item')) {
+            searchInput.value = e.target.textContent;
+            searchSuggestions.style.display = 'none';
+            toggleSearchMode(true);
+            // Qui puoi aggiungere la logica per caricare il film selezionato
+        }
+    });
+});
